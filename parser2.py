@@ -1,8 +1,8 @@
 import os
 from llama_parse import LlamaParse
-NEO4J_URI = "neo4j+s://49de7a4f.databases.neo4j.io"
+NEO4J_URI = ""
 NEO4J_USERNAME = "neo4j"
-NEO4J_PASSWORD = "wKUPjUOwQ2LN4khzVqV-qWtN8eta7JesjSqRUDbdYo8"
+NEO4J_PASSWORD = ""
 NEO4J_DATABASE = "neo4j"
 
 import os

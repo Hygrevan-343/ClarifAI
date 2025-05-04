@@ -7,8 +7,8 @@ NEO4J_DATABASE = "neo4j"
 
 import os
 
-os.environ["OPENAI_API_KEY"] = "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"
-os.environ['GROQ_API_KEY'] = "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"
+os.environ["OPENAI_API_KEY"] = ""
+os.environ['GROQ_API_KEY'] = ""
 
 from llama_index.core import KnowledgeGraphIndex
 from llama_index.core import StorageContext

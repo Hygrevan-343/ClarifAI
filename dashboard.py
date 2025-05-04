@@ -13,9 +13,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
 NEO4J_URI = "neo4j+s://49de7a4f.databases.neo4j.io"
-NEO4J_USERNAME = "neo4j"
-NEO4J_PASSWORD = "wKUPjUOwQ2LN4khzVqV-qWtN8eta7JesjSqRUDbdYo8"
-NEO4J_DATABASE = "neo4j"
+NEO4J_USERNAME = ""
+NEO4J_PASSWORD = ""
+NEO4J_DATABASE = ""
 os.environ["OPENAI_API_KEY"] = "OPEN_API_KEY"
 os.environ['GROQ_API_KEY'] = "GROQ_API_KEY"
 

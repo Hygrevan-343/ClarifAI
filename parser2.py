@@ -27,7 +27,7 @@ upload_folder = "./uploads"
 
 def parse_docs ():
     parser = LlamaParse(
-        api_key="llx-x77qBLfrvYgpFLQDDXAXSEBHUF8afIhPwAK5zyeLKzhX0ovT",
+        api_key="LLAMA_PARSER_API_KEY",
         result_type="markdown",
         num_workers=4,
         verbose=True,

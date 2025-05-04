@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClarifAI - Final</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-color: #495057;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-container {
+            width: 95%;
+            height: 90vh;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+        }
+
+        .left-panel {
+            background-color: var(--secondary-color);
+            border-right: 1px solid var(--border-color);
+            height: 100%;
+            padding: 20px;
+            flex: 0 0 auto;
+            width: 50%;
+            overflow-y: auto;
+        }
+
+        .content-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .content-text {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .content-image {
+            width: 150px; /* Adjust width */
+            height: 150px; /* Adjust height */
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .right-panel {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+            position: relative;
+        }
+
+        .vertical-resizer {
+            width: 6px;
+            cursor: col-resize;
+            background-color: var(--border-color);
+            height: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .horizontal-resizer {
+            height: 6px;
+            cursor: row-resize;
+            background-color: var(--border-color);
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .vertical-resizer:hover, 
+        .vertical-resizer.active,
+        .horizontal-resizer:hover,
+        .horizontal-resizer.active {
+            background-color: var(--primary-color);
+        }
+
+        .chat-empty-area {
+            flex: 1;
+            background-color: #ffffff;
+            min-height: 100px;
+            overflow-y: auto;
+        }
+
+        .chat-bottom-section {
+            background-color: #ffffff;
+            min-height: 100px;
+        }
+
+        .chat-interface {
+            background-color: var(--secondary-color);
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            height: 120px;
+        }
+
+        .query-input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .query-input {
+            border-radius: 25px;
+            padding: 15px 20px;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .query-input:focus {
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+            border-color: var(--primary-color);
+        }
+
+        .send-button {
+            position: absolute;
+            right: 15px;
+            background-color: var(--primary-color);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .send-button:hover {
+            background-color: #357abd;
+        }
+
+        .send-button i {
+            color: white;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-container {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+            }
+            
+            .left-panel {
+                width: 300px;
+            }
+        }
+        .welcome-message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        .welcome-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        .welcome-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .welcome-subtitle {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Previous styles remain here */
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-color: #495057;
+        }
+
+        .chat-bottom-section {
+            background-color: #ffffff;
+            min-height: 250px; /* Increased to accommodate welcome message */
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-empty-area {
+        flex: 1;
+        background-color: #ffffff;
+        min-height: 100px;
+        overflow-y: auto;
+    }
+
+    .chat-bottom-section {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .chat-interface {
+        background-color: var(--secondary-color);
+        padding: 20px;
+        border-top: 1px solid var(--border-color);
+        position: sticky; /* Fixed to the bottom of the container */
+        bottom: 0;
+    }
+    
+    .content-text {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .content-image {
+            width: 150px; /* Adjust width */
+            height: 150px; /* Adjust height */
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .user-message, .bot-message {
+    margin: 10px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    max-width: 75%;
+    word-wrap: break-word;
+}
+
+.user-message {
+    background-color: #4a90e2;
+    color: #ffffff;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.bot-message {
+    background-color: #f1f0f0;
+    color: #333;
+    align-self: flex-start;
+    text-align: left;
+}
+
+.loading-icon {
+    color: #4a90e2;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    font-size: 0.9rem;
+}
+.chat-empty-area {
+    height: 400px; /* Adjust as needed */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+.chat-bottom-section{
+    overflow: auto;
+}
+
+
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Left Panel -->
+        <div class="left-panel" id="leftPanel">
+            
+        </div>
+
+        <!-- Vertical Resizer -->
+        <div class="vertical-resizer" id="verticalResizer"></div>
+
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <div class="chat-bottom-section">
+                <!-- Insert the image here -->
+                <img src="uploads/graph_image.png" alt="Graph Image" style="width: 100%; height: auto;">
+            </div>
+          <div class="horizontal-resizer" id="horizontalResizer"></div>
+          <div class="chat-bottom-section">
+            <div class="chat-empty-area"></div>
+              <div class="chat-interface">
+                  <div class="query-input-group">
+                      <textarea class="form-control query-input" 
+                                rows="2" 
+                                placeholder="Type your message here..."
+                                style="padding-right: 50px;"></textarea>
+                      <button onclick="sendQuestion()" class="send-button">
+                          <i class="fas fa-paper-plane"></i>
+                      </button>
+                  </div>
+                  <div id="queryDisplayArea"></div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <!-- <script>
+        function sendQuestion() {
+            const question = document.getElementById("question").value;
+            fetch("/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ question }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const chatArea = document.getElementById("chat-area");
+                chatArea.innerHTML += `<div>${data.response}</div>`;
+            });
+        }
+        </script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <!-- <script>
+        function sendQuestion() {
+    const queryInput = document.getElementById('queryInput').value;
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    const queryDisplayArea = document.getElementById('queryDisplayArea');
+    
+    // If there is a query, hide the welcome message and display the query
+    if (queryInput.trim() !== "") {
+        // Hide the welcome message
+        welcomeMessage.style.display = 'none';
+        
+        // Display the query at the top
+        const queryElement = document.createElement('div');
+        queryElement.classList.add('query-display');
+        queryElement.textContent = queryInput;
+        queryDisplayArea.appendChild(queryElement);
+        
+        // Optionally clear the input field after submitting
+        document.getElementById('queryInput').value = '';
+    }
+}
+
+    </script> -->
+    
+    <script>
+        // Fetch content from content.txt file
+        fetch('/static/summ_content.txt')
+            .then(response => response.text())
+            .then(text => {
+                // Split text by '****' to get each paragraph
+                const paragraphs = text.split('****').filter(para => para.trim() !== '');
+
+                // Select the left-panel
+                const leftPanel = document.getElementById('leftPanel');
+
+                // Loop through each paragraph and create a content-block div
+                paragraphs.forEach((para, index) => {
+                    const contentBlock = document.createElement('div');
+                    contentBlock.classList.add('content-block');
+
+                    // Add text content
+                    const contentText = document.createElement('div');
+                    contentText.classList.add('content-text');
+                    contentText.textContent = para.trim();
+                    contentBlock.appendChild(contentText);
+
+                    // Add image
+                    const contentImage = document.createElement('img');
+                    contentImage.classList.add('content-image');
+                    contentImage.src = `/static/output/image-${index}.png`; // Using the "image-0.png", "image-1.png", etc. naming convention
+                    contentImage.alt = `Image ${index + 1}`;
+                    contentBlock.appendChild(contentImage);
+
+                    // Append the content block to the left panel
+                    leftPanel.appendChild(contentBlock);
+                });
+            })
+            .catch(error => console.error('Error fetching content:', error));
+    </script>
+    
+    
+    <script>
+        // Display loading icon
+        function showLoading() {
+            const chatArea = document.querySelector(".chat-empty-area");
+            const loading = document.createElement("div");
+            loading.classList.add("loading-icon");
+            loading.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Loading...`;
+            chatArea.appendChild(loading);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            return loading;
+        }
+    
+        // Remove loading icon
+        function hideLoading(loading) {
+            loading.remove();
+        }
+    
+        function sendQuestion() {
+            // Get the question from the textarea
+            const question = document.querySelector(".query-input").value;
+    
+            if (question.trim() === "") return; // Avoid sending empty messages
+    
+            // Display user's question in the chat area
+            const chatArea = document.querySelector(".chat-empty-area");
+            const userMessage = document.createElement("div");
+            userMessage.classList.add("user-message");
+            userMessage.innerHTML = `<strong>You:</strong> ${question}`;
+            chatArea.appendChild(userMessage);
+    
+            // Scroll to the bottom of the chat area for the latest message
+            chatArea.scrollTop = chatArea.scrollHeight;
+    
+            // Show loading icon
+            const loading = showLoading();
+    
+            // Send the question to the Flask backend
+            fetch("/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ question: question }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideLoading(loading); // Remove loading icon
+                // Display bot's response in the chat area
+                const botMessage = document.createElement("div");
+                botMessage.classList.add("bot-message");
+                botMessage.innerHTML = `<strong>Bot:</strong> ${data.response}`;
+                chatArea.appendChild(botMessage);
+    
+                // Clear the input field after sending the message
+                document.querySelector(".query-input").value = "";
+    
+                // Scroll to the bottom of the chat area for the latest message
+                chatArea.scrollTop = chatArea.scrollHeight;
+            })
+            .catch(error => {
+                hideLoading(loading); // Remove loading icon if an error occurs
+                console.error("Error:", error);
+            });
+        }
+    
+        // Trigger sendQuestion on Enter key press
+        document.querySelector(".query-input").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // Prevent new line in textarea
+                sendQuestion();
+            }
+        });
+    </script>
+    
+</body>
+</html>
